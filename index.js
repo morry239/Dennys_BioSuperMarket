@@ -28,14 +28,14 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-      user: 'madrefiumevillaggio2984@gmail.com',
-      pass: 'iushsqxrobwwvzqd',
+      user: 'MYEMAIL',
+      pass: 'MYAPPPWD',
   },
 });
 
 transporter.sendMail({
-from: '"madrefiumevillaggio2984@gmail.com" ',
-to: "katedrala.sv.vitafvltava4512@gmail.com",
+from: '"MYFIRSTMAIL" ',
+to: "MYSECONDMAIL",
 subject: "test 30.01.23",
 text: "test test ",
 html: "<b>test test </b>" + getDatabaseData(quote) + "<b>end</b>",
@@ -44,6 +44,3 @@ html: "<b>test test </b>" + getDatabaseData(quote) + "<b>end</b>",
 }).catch(console.error);
 
     
-//iushsqxrobwwvzqd -- app pwd
-//database 40802897fefc469f8f9e17db48239321
-//token secret_4sbIAcIS0qkJInBhIiKpzyZ6g3ebdKOHzV4uFLbBd1I
