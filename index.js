@@ -7,20 +7,31 @@ const NOTION_CLIENT = new Client({auth:process.env.NOTION_KEY})
 const DATABASE_ID = process.env.NOTION_DATABASE_ID
 
 async function getDatabaseData(client,databaseId){
-  const response = await client.databases.query({
-    database_id: databaseId,
-  })
-  console.log(response)
-  const results = response.results;
-  const { id } = results[Math.floor(Math.random() * results.length)];
-
-  const quoteResponse = await NOTION_CLIENT.pages.retrieve({
-    page_id: id,
-  });
-
-  const quote = quoteResponse.properties.Quote.title[0].plain_text;
-  const url = quoteResponse.url;
-
+  try{
+    let results = []
+    const response = await client.databases.query({
+      database_id: databaseId,
+    })
+    console.log(response)
+    results = [...results, ...response.results]
+  
+    let hasMore = response.has_more
+    let nextCursor = response.next_cursor
+  
+    while(hasMore){
+      const reaction = await client.databases.query
+      ({
+        database_id: databaseId,
+        start_cursor: nextCursor,
+      })
+      results = [...results, ...reaction.results]
+      hasMore = reaction.has_more
+      nextCursor = reaction.next_cursor
+    }
+    return results
+  } catch (error){
+    console.error(error)
+  }
 }
 
 const transporter = nodemailer.createTransport({
