@@ -29,8 +29,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-      user: 'madrefiumevillaggio2984@gmail.com',
-      pass: 'imfexragjrlibpuh',
+      user: 'MYEMAIL',
+      pass: 'MYAPPPWD',
   },
 });
 
@@ -45,8 +45,8 @@ transporter.use('compile',hbs({
 }));
 
 transporter.sendMail({
-from: '"madrefiumevillaggio2984@gmail.com" ',
-to: "katedrala.sv.vitafvltava4512@gmail.com",
+from: '"MYEMAIL" ',
+to: "MYSECONDEMAIL",
 subject: "test Carnival",
 text: "test test ",
 template: 'test_confirmation',
