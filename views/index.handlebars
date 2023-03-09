@@ -5,11 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <span></span>
-    <h1>{{title}}</h1>
-    <span style="color:blue;">{{html}}</span>
+    <style type="text/css">
+      p{
+        color: blueviolet;
+      }
+    </style>
 </head>
 <body>
     
+    <div>Welcome{{name}}! This is my first hbs email.</div>
+    <!--div>Today's quote: {{this.quote}}</div-->
+    <span></span>
+    <h1>{{title}}</h1>
+    {{#each quotes}}
+    {{#with this}}
+    <span style="color:blue;">{{this.msg}}</span>
+    {{/with}}
+    {{/each}}
+    <div id="root"></div>
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+    <script src="/Users/myName/Desktop/myDevPortFolio/edi_silva_tut/node-sending-emails/Dennys_BioSuperMarket/index.js"></script>
 </body>
+<!-- Include Handlebars from a CDN -->
+
 </html>
