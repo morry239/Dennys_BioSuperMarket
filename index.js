@@ -2,56 +2,72 @@ import {Client as Client} from '@notionhq/client';
 import dotenv from 'dotenv'
 dotenv.config()
 import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
 
-const NOTION_CLIENT = new Client({auth:process.env.NOTION_KEY})
+const NOTION_CLIENT = new Client({auth:process.env.NOTION_TOKEN})
 const DATABASE_ID = process.env.NOTION_DATABASE_ID
 
-async function getDatabaseData(client,databaseId){
-  try{
-    let results = []
-    const response = await client.databases.query({
-      database_id: databaseId,
-    })
-    console.log(response)
-    results = [...results, ...response.results]
-  
-    let hasMore = response.has_more
-    let nextCursor = response.next_cursor
-  
-    while(hasMore){
-      const reaction = await client.databases.query
-      ({
-        database_id: databaseId,
-        start_cursor: nextCursor,
-      })
-      results = [...results, ...reaction.results]
-      hasMore = reaction.has_more
-      nextCursor = reaction.next_cursor
-    }
-    return results
-  } catch (error){
-    console.error(error)
-  }
-}
+const dbResponse = await NOTION_CLIENT.databases.query({
+  database_id: DATABASE_ID,
+});
+
+let tasks = dbResponse.results;
+let task = tasks[Math.floor(Math.random() * tasks.length)];
+
+const quotePage = await NOTION_CLIENT.pages.retrieve({
+  page_id:task.id,
+});
+
+const quote = quotePage.properties.Quote.title[0].plain_text;
+
+console.log(quote);
+
+const mailContent = `<p><i>${quote}</i></p>`;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
-      user: 'MYEMAIL',
-      pass: 'MYAPPPWD',
+      user: 'madrefiumevillaggio2984@gmail.com',
+      pass: 'imfexragjrlibpuh',
   },
 });
 
+transporter.use('compile',hbs({
+  viewEngine: {
+    extname: '.handlebars',
+    layoutsDir: 'views/',
+    defaultLayout: false,
+    partialsDir: 'views/'},
+  viewPath: './views/',
+  extName:'.handlebars'
+}));
+
 transporter.sendMail({
-from: '"MYFIRSTMAIL" ',
-to: "MYSECONDMAIL",
-subject: "test 30.01.23",
+from: '"madrefiumevillaggio2984@gmail.com" ',
+to: "katedrala.sv.vitafvltava4512@gmail.com",
+subject: "test Carnival",
 text: "test test ",
-html: "<b>test test </b>" + getDatabaseData(quote) + "<b>end</b>",
+template: 'test_confirmation',
+html: "<b>test test </b>" + mailContent + "<b>end</b>", 
 }).then(info=>{
   console.log({info});
 }).catch(console.error);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
